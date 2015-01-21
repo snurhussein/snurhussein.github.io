@@ -9,7 +9,7 @@
   <script src="http://dimplejs.org/dist/dimple.v2.1.2.min.js"></script>
   <script type="text/javascript">
     var svg = dimple.newSvg("#chartContainer", 590, 400);
-    d3.tsv("http://dimplejs.org/data/example_data.tsv", function (data) {
+    d3.tsv("https://s3.amazonaws.com/cdifolder/example_data.tsv", function (data) {
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(90, 50, 480, 310)
       myChart.addCategoryAxis("x", ["Channel", "Price Tier"]);
