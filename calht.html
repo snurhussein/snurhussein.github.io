@@ -1,33 +1,42 @@
 <html>
-<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
-<script type="text/javascript" src="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
-
+<head>
+    <meta charset="utf-8">
+    <title>Calendar heatmap 1</title>
+    <link type="text/css" rel="stylesheet" href="cal-heatmap.css"/>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="cal-heatmap.js"></script>
+    <style>
+        .q10{fill:rgb(165,0,38)}
+        .q9{fill:rgb(215,48,39)}
+        .q8{fill:rgb(244,109,67)}
+        .q7{fill:rgb(253,174,97)}
+        .q6{fill:rgb(254,224,139)}
+        .q5{fill:rgb(255,255,191)}
+        .q4{fill:rgb(217,239,139)}
+        .q3{fill:rgb(166,217,106)}
+        .q2{fill:rgb(102,189,99)}
+        .q1{fill:rgb(26,152,80)}
+        .q0{fill:rgb(0,104,55)}
+    </style>
+ 
+</head>
 <div id="cal-heatmap"></div>
 <script type="text/javascript">
-
-
- 
-		var cal = new CalHeatMap();
-	cal.init({
-
-	domain: "hour",
-subDomain: "x_min",
-range: 24,
-rowLimit: 5,
-start: new Date(2000, 0, 1),
-data: "http://kamisama.github.io/cal-heatmap/datas-years.json",
-
-legendColors: {
-		min: "#efefef",
-		max: "steelblue",
-		empty: "white"
-}
-
- 
- 
- });
+    var cal = new CalHeatMap();
+    cal.init({
+        id: "cal-heatmap",
+        start: new Date(2000, 0),
+        data:"http://kamisama.github.io/cal-heatmap/datas-years.json",
+        domain : "month",
+        subDomain : "day",
+        range : 12,
+        scale: [10,20,30,40,50,60,70,80,90],
+        itemName: ['%','%'],
+        cellsize: 12,
+        format: {
+            date: "%Y-%m-%d",
+            legend: "%B"
+        }
+    });
 </script>
-
 </html>
