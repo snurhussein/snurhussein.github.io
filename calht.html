@@ -1,0 +1,33 @@
+<html>
+<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+<script type="text/javascript" src="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+
+<div id="cal-heatmap"></div>
+<script type="text/javascript">
+
+
+ 
+		var cal = new CalHeatMap();
+	cal.init({
+
+	domain: "hour",
+subDomain: "x_min",
+range: 24,
+rowLimit: 5,
+start: new Date(2000, 0, 1),
+data: "http://kamisama.github.io/cal-heatmap/datas-years.json",
+
+legendColors: {
+		min: "#efefef",
+		max: "steelblue",
+		empty: "white"
+}
+
+ 
+ 
+ });
+</script>
+
+</html>
