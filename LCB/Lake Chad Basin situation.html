@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/label.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="js/OSMBuildings-Leaflet.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Lake Chad Basin, 2016 situation</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="data/json_LargestEthnicGroup0.js"></script>
+        <script src="data/json_InternallyDisplacedPeople1.js"></script>
+        <script src="data/json_OtherConflictEventsFatalities2.js"></script>
+        <script src="data/json_BokoHaramConflict2016EventsFatalities3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:14, minZoom:4
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+        var basemap0 = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
+            maxZoom: 14
+        });
+        basemap0.addTo(map);
+        var initialOrder = new Array();
+        var layerOrder = new Array();
+        function stackLayers() {
+            for (index = 0; index < initialOrder.length; index++) {
+                map.removeLayer(initialOrder[index]);
+                map.addLayer(initialOrder[index]);
+            }
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+            map.setMaxBounds(map.getBounds());
+        }
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        layerControl = L.control.layers({},{},{collapsed:false});
+        function pop_LargestEthnicGroup0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleLargestEthnicGroup0(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = feature.properties.html_exp;
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleLargestEthnicGroup0(feature) {
+            return {
+                weight: 1.44,
+                color: '#73483a',
+                fillColor: '#5ff5eb',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.3,
+                fillOpacity: 0.0
+            };
+        }
+        var json_LargestEthnicGroup0JSON = new L.geoJson(json_LargestEthnicGroup0, {
+            onEachFeature: pop_LargestEthnicGroup0,
+            style: doStyleLargestEthnicGroup0
+        });
+        layerOrder[layerOrder.length] = json_LargestEthnicGroup0JSON;
+        bounds_group.addLayer(json_LargestEthnicGroup0JSON);
+        initialOrder[initialOrder.length] = json_LargestEthnicGroup0JSON;
+        feature_group.addLayer(json_LargestEthnicGroup0JSON);
+        function pop_InternallyDisplacedPeople1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleInternallyDisplacedPeople1(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = feature.properties.html_exp;
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleInternallyDisplacedPeople1(feature) {
+        if (feature.properties['IDP_pop'] >= 10.0 &&
+                feature.properties['IDP_pop'] <= 500.0) {
+
+            return {
+                color: '#787878',
+                weight: '0.8',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#fcfbfd',
+                opacity: '0.7',
+                fillOpacity: '0.7',
+            }
+        }
+        if (feature.properties['IDP_pop'] >= 500.0 &&
+                feature.properties['IDP_pop'] <= 2000.0) {
+
+            return {
+                color: '#787878',
+                weight: '0.8',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#dcdcec',
+                opacity: '0.7',
+                fillOpacity: '0.7',
+            }
+        }
+        if (feature.properties['IDP_pop'] >= 2000.0 &&
+                feature.properties['IDP_pop'] <= 10000.0) {
+
+            return {
+                color: '#787878',
+                weight: '0.8',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#a3a0cb',
+                opacity: '0.7',
+                fillOpacity: '0.7',
+            }
+        }
+        if (feature.properties['IDP_pop'] >= 10000.0 &&
+                feature.properties['IDP_pop'] <= 50000.0) {
+
+            return {
+                color: '#787878',
+                weight: '0.8',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#6a51a3',
+                opacity: '0.7',
+                fillOpacity: '0.7',
+            }
+        }
+        if (feature.properties['IDP_pop'] >= 50000.0 &&
+                feature.properties['IDP_pop'] <= 687369.0) {
+
+            return {
+                color: '#787878',
+                weight: '0.8',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#3f007d',
+                opacity: '0.7',
+                fillOpacity: '0.7',
+            }
+        }
+        }
+        var json_InternallyDisplacedPeople1JSON = new L.geoJson(json_InternallyDisplacedPeople1, {
+            onEachFeature: pop_InternallyDisplacedPeople1,
+            style: doStyleInternallyDisplacedPeople1
+        });
+        layerOrder[layerOrder.length] = json_InternallyDisplacedPeople1JSON;
+        bounds_group.addLayer(json_InternallyDisplacedPeople1JSON);
+        initialOrder[initialOrder.length] = json_InternallyDisplacedPeople1JSON;
+        feature_group.addLayer(json_InternallyDisplacedPeople1JSON);
+        function pop_OtherConflictEventsFatalities2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleOtherConflictEventsFatalities2(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = feature.properties.html_exp;
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleOtherConflictEventsFatalities2(feature) {
+        if (feature.properties['FATALITIES'] >= 0.0 &&
+                feature.properties['FATALITIES'] <= 10.0) {
+
+            return {
+                radius: 3.2,
+                fillColor: '#e5c314',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        if (feature.properties['FATALITIES'] >= 11.0 &&
+                feature.properties['FATALITIES'] <= 25.0) {
+
+            return {
+                radius: 5.6,
+                fillColor: '#e5c314',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        if (feature.properties['FATALITIES'] >= 26.0 &&
+                feature.properties['FATALITIES'] <= 71.0) {
+
+            return {
+                radius: 9.6,
+                fillColor: '#e5c314',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        }
+        var json_OtherConflictEventsFatalities2JSON = new L.geoJson(json_OtherConflictEventsFatalities2, {
+            onEachFeature: pop_OtherConflictEventsFatalities2,
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, doStyleOtherConflictEventsFatalities2(feature))
+            }
+        });
+        layerOrder[layerOrder.length] = json_OtherConflictEventsFatalities2JSON;
+
+        bounds_group.addLayer(json_OtherConflictEventsFatalities2JSON);
+        initialOrder[initialOrder.length] = json_OtherConflictEventsFatalities2JSON;
+        feature_group.addLayer(json_OtherConflictEventsFatalities2JSON);
+        function pop_BokoHaramConflict2016EventsFatalities3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    layer.setStyle(doStyleBokoHaramConflict2016EventsFatalities3(feature));
+
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = feature.properties.html_exp;
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleBokoHaramConflict2016EventsFatalities3(feature) {
+        if (feature.properties['FATALITIES'] >= 0.0 &&
+                feature.properties['FATALITIES'] <= 10.0) {
+
+            return {
+                radius: 3.2,
+                fillColor: '#730000',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        if (feature.properties['FATALITIES'] >= 11.0 &&
+                feature.properties['FATALITIES'] <= 25.0) {
+
+            return {
+                radius: 5.6,
+                fillColor: '#730000',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        if (feature.properties['FATALITIES'] >= 26.0 &&
+                feature.properties['FATALITIES'] <= 100.0) {
+
+            return {
+                radius: 9.6,
+                fillColor: '#730000',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        if (feature.properties['FATALITIES'] >= 101.0 &&
+                feature.properties['FATALITIES'] <= 300.0) {
+
+            return {
+                radius: 12.8,
+                fillColor: '#730000',
+                color: '#ffffff',
+                weight: 0.0,
+                fillOpacity: '0.8',
+                opacity: '0.8',
+                dashArray: ''
+            }
+        }
+
+        }
+        var json_BokoHaramConflict2016EventsFatalities3JSON = new L.geoJson(json_BokoHaramConflict2016EventsFatalities3, {
+            onEachFeature: pop_BokoHaramConflict2016EventsFatalities3,
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, doStyleBokoHaramConflict2016EventsFatalities3(feature))
+            }
+        });
+        layerOrder[layerOrder.length] = json_BokoHaramConflict2016EventsFatalities3JSON;
+
+        bounds_group.addLayer(json_BokoHaramConflict2016EventsFatalities3JSON);
+        initialOrder[initialOrder.length] = json_BokoHaramConflict2016EventsFatalities3JSON;
+        feature_group.addLayer(json_BokoHaramConflict2016EventsFatalities3JSON);
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+        var baseMaps = {'OSM HOT': basemap0};
+        L.control.layers(baseMaps,{'Boko Haram Conflict 2016 Events (Fatalities)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/BokoHaramConflict2016EventsFatalities3_010.png" /> 0 - 10<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/BokoHaramConflict2016EventsFatalities3_1125.png" /> 11 - 25<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/BokoHaramConflict2016EventsFatalities3_26100.png" /> 26 - 100<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/BokoHaramConflict2016EventsFatalities3_101300.png" /> 101 - 300<br />': json_BokoHaramConflict2016EventsFatalities3JSON,'Other Conflict Events (Fatalities)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/OtherConflictEventsFatalities2_010.png" /> 0 - 10<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/OtherConflictEventsFatalities2_1125.png" /> 11 - 25<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/OtherConflictEventsFatalities2_26100.png" /> 26 - 100<br />': json_OtherConflictEventsFatalities2JSON,'Internally Displaced People<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/InternallyDisplacedPeople1_10500.png" />  10 - 500<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/InternallyDisplacedPeople1_5012000.png" /> 501 - 2000<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/InternallyDisplacedPeople1_200110000.png" /> 2001 - 10000<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/InternallyDisplacedPeople1_1000150000.png" /> 10001 - 50000<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/InternallyDisplacedPeople1_50001688000.png" /> 50001 - 688000<br />': json_InternallyDisplacedPeople1JSON,'<img src="legend/LargestEthnicGroup0.png" /> Largest Ethnic Group': json_LargestEthnicGroup0JSON,},{collapsed:false}).addTo(map);
+        stackLayers();
+        map.on('overlayadd', restackLayers);
+        </script>
+    </body>
+</html>
