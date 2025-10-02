@@ -226,6 +226,8 @@ figure {
   -o-transition: 0.5s;
   transition: 0.5s;
 }
+
+
 @media screen and (max-width: 1200px) {
   #fh5co-main {
     width: 70%;
